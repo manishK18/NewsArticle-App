@@ -1,9 +1,18 @@
 package com.ps.newyorktimesapp.models
 
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "NewsArticle", indices = [Index(value = ["headline"], unique = true)])
 data class ArticleData(
+    @PrimaryKey
+    @Expose
+    @SerializedName("id")
+    val id: String,
+
     @Expose
     @SerializedName("imageUrl")
     val imageUrl: String?,
@@ -40,6 +49,5 @@ data class ArticleData(
 ) {
     companion object {
         const val CARD_TYPE_ARTICLE = 0
-        const val CARD_TYPE_AD = 1
     }
 }

@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bharat.shortnews.utils.TimeUtils
 import com.ps.newyorktimesapp.R
+import com.ps.newyorktimesapp.models.ArticleData
+import com.ps.newyorktimesapp.models.SearchArticleResponse
 import com.ps.newyorktimesapp.models.api_direct.ArticleDataAPI
 import com.ps.newyorktimesapp.models.api_direct.Multimedia
 import com.ps.newyorktimesapp.models.api_direct.SearchArticlesResponseAPI
@@ -29,8 +31,8 @@ class SearchNewsArticlesFragmentVM(
     private val repo: SearchNewsFragmentRepo
 ) : ViewModel() {
     var requestType = RequestType.NORMAL
-    private val _searchArticleMutableLD = MutableLiveData<RequestResult<SearchArticlesResponseAPI?>>()
-    val searchArticleLD: LiveData<RequestResult<SearchArticlesResponseAPI?>> = _searchArticleMutableLD
+    private val _searchArticleMutableLD = MutableLiveData<RequestResult<SearchArticleResponse?>>()
+    val searchArticleLD: LiveData<RequestResult<SearchArticleResponse?>> = _searchArticleMutableLD
 
     private val _uiListMutableLD = MutableLiveData<List<RecyclerViewItem>?>()
     val uiListMutableLD: LiveData<List<RecyclerViewItem>?> = _uiListMutableLD
@@ -38,6 +40,8 @@ class SearchNewsArticlesFragmentVM(
     private var searchArticleJob: Job? = null
     private var pageNum: Int = 0
     private var searchQuery: String? = null
+    private var offset = 0
+    private val LIMIT = 20
 
     fun searchArticles(mSearchQuery: String?, requestType: RequestType = RequestType.NORMAL) {
         searchArticleJob?.cancel()
@@ -51,18 +55,19 @@ class SearchNewsArticlesFragmentVM(
                     _searchArticleMutableLD.value = RequestResult.loading(null)
                     _uiListMutableLD.value = mutableListOf()
                 }
-                repo.getSearchArticlesNYTAPI(query = searchQuery ?: "", pageNum = pageNum.toString())
+                repo.getSearchArticlesNYTAPI(query = searchQuery ?: "", offset = offset, limit = LIMIT)
                     .onSuccess {
                         println(it.toString())
+                        offset = it.meta?.offset ?: 0
                         if (requestType == RequestType.LOAD_MORE) {
                             _uiListMutableLD.value =
                                 _uiListMutableLD.value?.toMutableList()?.also { oldList ->
                                     // Removing the LoadMoreVH
                                     oldList.subList(0, oldList.size - 1)
-                                        .addAll(curateRvDataList(it.response?.articleDataList))
+                                        .addAll(curateRvDataList(it.articleDataList))
                                 }
                         } else {
-                            _uiListMutableLD.value = curateRvDataList(it.response?.articleDataList)
+                            _uiListMutableLD.value = curateRvDataList(it.articleDataList)
                         }
                         _searchArticleMutableLD.value = RequestResult.success(it)
                     }.onFailure {
@@ -78,23 +83,18 @@ class SearchNewsArticlesFragmentVM(
         }
     }
 
-    private fun curateRvDataList(articlesDataList: List<ArticleDataAPI>? = null): List<RecyclerViewItem> {
+    private fun curateRvDataList(articlesDataList: List<ArticleData>? = null): List<RecyclerViewItem> {
         val rvDataList = mutableListOf<RecyclerViewItem>()
         articlesDataList?.forEach {
             rvDataList.add(
                 NewsArticleRvData(
-                    imageUrl = getImageUrlCompletePath(it),
-                    headline = it.headline?.main,
-                    description = it.leadParagraph,
-                    publishedDate = TimeUtils.getFormattedDateTime(it.pubDate),
-                    keywords = it.keywords?.joinToString(
-                        separator = ", ",
-                        transform = { it.value?.capitalize() ?: "" },
-                        limit = 5,
-                        truncated = " etc."
-                    ),
+                    imageUrl = it.imageUrl,
+                    headline = it.headline,
+                    description = it.description,
+                    publishedDate = it.publishedDate,
+                    keywords = it.keywords,
                     webUrl = it.webUrl,
-                    authorName = it.byline?.original,
+                    authorName = it.authorName,
                     typeOfMaterial = it.typeOfMaterial
                 )
             )
@@ -165,6 +165,10 @@ class SearchNewsArticlesFragmentVM(
     fun decrementPageNum() = pageNum--
     fun getSearchQuery() = searchQuery
     fun getCurrentPageNum() = pageNum
+
+    fun isRequestInProgress(): Boolean {
+        return searchArticleJob?.isActive == true
+    }
 
     companion object {
         private const val QUERY_DELAY_MS = 500L

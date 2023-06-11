@@ -6,7 +6,6 @@ import com.ps.newyorktimesapp.models.ArticleData
 import com.ps.newyorktimesapp.utils.CommonUtils.getGsonInstance
 
 class ArticleDataConverter {
-
     @TypeConverter
     fun fromArticleData(articleData: ArticleData): String {
         return getGsonInstance().toJson(articleData)

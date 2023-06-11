@@ -6,12 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.ps.newyorktimesapp.database.NewsAppDatabase
-import com.ps.newyorktimesapp.database.models.NewsArticle
 import com.ps.newyorktimesapp.database.models.QueryCache
 import com.ps.newyorktimesapp.database.models.QueryCacheNewsArticleCrossRef
 import com.ps.newyorktimesapp.database.models.QueryWithNewsArticle
 import com.ps.newyorktimesapp.models.ArticleData
-import com.ps.newyorktimesapp.models.api_direct.ArticleDataAPI
 
 @Dao
 interface NewsArticleDao {
@@ -20,13 +18,13 @@ interface NewsArticleDao {
         fun getInstance() = NewsAppDatabase.INSTANCE?.getNewsArticleDao()
     }
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNewsArticle(newsArticle: NewsArticle)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertNewsArticle(newsArticle: ArticleData)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertQuery(queryCache: QueryCache)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertQueryWithNewsArticles(queryCacheNewsArticleCrossRef: QueryCacheNewsArticleCrossRef)
 
     @Transaction

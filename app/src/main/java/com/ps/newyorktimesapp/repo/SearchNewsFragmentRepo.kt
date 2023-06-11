@@ -1,14 +1,12 @@
 package com.ps.newyorktimesapp.repo
 
 import com.ps.newyorktimesapp.database.dao.NewsArticleDao
-import com.ps.newyorktimesapp.database.models.NewsArticle
 import com.ps.newyorktimesapp.database.models.QueryCache
 import com.ps.newyorktimesapp.database.models.QueryCacheNewsArticleCrossRef
+import com.ps.newyorktimesapp.models.ArticleData
 import com.ps.newyorktimesapp.models.SearchArticleResponse
-import com.ps.newyorktimesapp.models.api_direct.ArticleDataAPI
-import com.ps.newyorktimesapp.models.api_direct.Response
-import com.ps.newyorktimesapp.models.api_direct.SearchArticlesResponseAPI
 import com.ps.newyorktimesapp.network.NewsArticleSearchAPI
+import com.ps.newyorktimesapp.network.RequestResult
 import com.ps.newyorktimesapp.utils.PreferenceManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -21,41 +19,39 @@ class SearchNewsFragmentRepo(
 
     suspend fun getSearchArticlesNYTAPI(
         query: String,
-        pageNum: String
-    ): Result<SearchArticlesResponseAPI> {
-        if (PreferenceManager.isAppModeOnline().not()) return Result.success(
-            serveCacheResponseData(
-                query
+        offset: Int,
+        limit: Int
+    ): Result<SearchArticleResponse> {
+        if (PreferenceManager.isAppModeOnline().not()) {
+            return Result.success(
+                serveCacheResponseData(query)
             )
-        )
+        }
         val apiResult = createApiCall {
-            api.getSearchArticles(query, pageNum)
+            api.getNewsArticle(query, offset, limit)
         }
         if (apiResult.isSuccess) {
             // Cache data
             cacheNewsWithQueryData(
                 query = query,
-                response = apiResult.getOrNull()?.response
+                articleDataList = apiResult.getOrNull()?.articleDataList
             )
             return apiResult
         } else {
-            val newsArticleList = mutableListOf<ArticleDataAPI>()
+            val newsArticleList = mutableListOf<ArticleData>()
             localDataSource?.getNewsArticles(query)?.forEach {
-                it.newsArticles.map {
-                    it.article?.let { article -> newsArticleList.add(article) }
-                }
+                newsArticleList.addAll(it.newsArticles)
             }
             if (newsArticleList.isNotEmpty()) {
                 return Result.success(
-                    SearchArticlesResponseAPI(
-                        response = Response(
-                            articleDataList = newsArticleList,
-                            meta = null,
-                            currentPageNum = 0,
-                            nextPageNum = 0,
-                            previousPageNum = 0
-                        ),
-                        status = "OK"
+                    SearchArticleResponse(
+                        query = query,
+                        articleDataList = newsArticleList,
+                        status = RequestResult.Status.SUCCESS.toString(),
+                        meta = null,
+                        currentPageNum = 0,
+                        nextPageNum = 0,
+                        previousPageNum = 0
                     )
                 )
             } else {
@@ -67,48 +63,39 @@ class SearchNewsFragmentRepo(
         }
     }
 
-    suspend fun getSearchArticles(query: String, pageNum: String): Result<SearchArticleResponse> {
-        return createApiCall {
-            api.getLocalSearchArticles(query, pageNum)
-        }
-    }
+//    suspend fun getSearchArticles(query: String, pageNum: String): Result<SearchArticleResponse> {
+//        return createApiCall {
+//            api.getLocalSearchArticles(query, pageNum)
+//        }
+//    }
 
-    private suspend fun serveCacheResponseData(query: String): SearchArticlesResponseAPI {
-        val newsArticleList = mutableListOf<ArticleDataAPI>()
+    private suspend fun serveCacheResponseData(query: String): SearchArticleResponse {
+        val newsArticleList = mutableListOf<ArticleData>()
         localDataSource?.getNewsArticles(query)?.forEach {
-            it.newsArticles.map {
-                it.article?.let { article -> newsArticleList.add(article) }
-            }
+            newsArticleList.addAll(it.newsArticles)
         }
-        return SearchArticlesResponseAPI(
-            response = Response(
-                articleDataList = newsArticleList,
-                meta = null,
-                currentPageNum = 0,
-                nextPageNum = 0,
-                previousPageNum = 0
-            ),
-            status = "OK"
+        return SearchArticleResponse(
+            articleDataList = newsArticleList,
+            status = RequestResult.Status.SUCCESS.toString(),
+            query = query,
+            currentPageNum = 0,
+            nextPageNum = 0,
+            previousPageNum = 0,
+            meta = null
         )
     }
 
-    private suspend fun cacheNewsWithQueryData(query: String, response: Response?) {
-        response?.articleDataList?.forEach {
-            localDataSource?.insertNewsArticle(
-                NewsArticle(
-                    newsId = it.id,
-                    article = it
-                )
-            )
+    private suspend fun cacheNewsWithQueryData(query: String, articleDataList: List<ArticleData>?) {
+        articleDataList?.forEach {
+            localDataSource?.insertNewsArticle(it)
             localDataSource?.insertQuery(
-                queryCache = QueryCache(
-                    query = query
-                )
+                queryCache = QueryCache(query = query)
             )
             localDataSource?.insertQueryWithNewsArticles(
                 queryCacheNewsArticleCrossRef = QueryCacheNewsArticleCrossRef(
                     query = query,
-                    newsId = it.id
+                    id = it.id,
+                    headline = it.headline ?: ""
                 )
             )
         }

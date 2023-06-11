@@ -7,17 +7,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.ps.newyorktimesapp.database.converter.ArticleDataConverter
 import com.ps.newyorktimesapp.database.converter.CommonTypeConverters
-import com.ps.newyorktimesapp.database.converter.NewArticlesEntityTypeConverters
 import com.ps.newyorktimesapp.database.dao.NewsArticleDao
-import com.ps.newyorktimesapp.database.models.NewsArticle
 import com.ps.newyorktimesapp.database.models.QueryCache
 import com.ps.newyorktimesapp.database.models.QueryCacheNewsArticleCrossRef
+import com.ps.newyorktimesapp.models.ArticleData
 
 @Database(
-    entities = [NewsArticle::class, QueryCache::class, QueryCacheNewsArticleCrossRef::class],
+    entities = [ArticleData::class, QueryCache::class, QueryCacheNewsArticleCrossRef::class],
     version = NewsAppDatabase.DATABASE_VERSION
 )
-@TypeConverters(CommonTypeConverters::class, NewArticlesEntityTypeConverters::class, ArticleDataConverter::class)
+@TypeConverters(CommonTypeConverters::class, ArticleDataConverter::class)
 abstract class NewsAppDatabase : RoomDatabase() {
 
     companion object {

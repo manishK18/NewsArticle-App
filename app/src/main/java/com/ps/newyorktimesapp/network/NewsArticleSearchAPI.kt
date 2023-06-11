@@ -7,13 +7,21 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsArticleSearchAPI {
-    @GET("svc/search/v2/articlesearch.json")
-    suspend fun getSearchArticles(@Query("q") query: String, @Query("page") pageNum: String): Response<SearchArticlesResponseAPI>
+//    @GET("svc/search/v2/articlesearch.json")
+//    suspend fun getSearchArticles(
+//        @Query("q") query: String,
+//        @Query("page") pageNum: String
+//    ): Response<SearchArticlesResponseAPI>
 
-    @GET("news/search-articles")
-    suspend fun getLocalSearchArticles(@Query("query") query: String, @Query("page") pageNum: String): Response<SearchArticleResponse>
+    @GET("news/search")
+    suspend fun getNewsArticle(
+        @Query("query") query: String,
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int
+    ): Response<SearchArticleResponse>
 
     companion object {
-        fun create(): NewsArticleSearchAPI = RetrofitManager().createRetrofitService(NewsArticleSearchAPI::class.java)
+        fun create(): NewsArticleSearchAPI =
+            RetrofitManager().createRetrofitService(NewsArticleSearchAPI::class.java)
     }
 }

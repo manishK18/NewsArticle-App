@@ -6,6 +6,10 @@ import com.ps.newyorktimesapp.models.api_direct.Meta
 
 data class SearchArticleResponse(
     @Expose
+    @SerializedName("query")
+    val query: String?,
+
+    @Expose
     @SerializedName("results")
     val articleDataList: List<ArticleData>?,
 

@@ -12,17 +12,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.ps.newyorktimesapp.R
 import com.ps.newyorktimesapp.ViewModelFactory
 import com.ps.newyorktimesapp.adapters.UniversalRvAdapter
 import com.ps.newyorktimesapp.databinding.SearchNewsArticlesFragmentBinding
 import com.ps.newyorktimesapp.`interface`.OnSnapPositionChangeListener
-import com.ps.newyorktimesapp.models.api_direct.SearchArticlesResponseAPI
+import com.ps.newyorktimesapp.models.SearchArticleResponse
 import com.ps.newyorktimesapp.network.RequestResult
 import com.ps.newyorktimesapp.network.RequestType
+import com.ps.newyorktimesapp.utils.PreferenceManager
 import com.ps.newyorktimesapp.utils.attachSnapHelperWithListener
 import com.ps.newyorktimesapp.utils.setVisibilityAndText
 import com.ps.newyorktimesapp.viewmodels.SearchNewsArticlesFragmentVM
+
 
 class SearchNewsArticlesFragment : Fragment(R.layout.search_news_articles_fragment),
     SearchView.OnQueryTextListener {
@@ -58,19 +61,19 @@ class SearchNewsArticlesFragment : Fragment(R.layout.search_news_articles_fragme
         binding.apply {
             searchView.setOnQueryTextListener(this@SearchNewsArticlesFragment)
             detailNewsRv.apply {
-                val snapHelper = PagerSnapHelper()
-                snapHelper.attachToRecyclerView(this)
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = rvAdapter
-                attachSnapHelperWithListener(
-                    snapHelper,
-                    onSnapPositionChangeListener = object : OnSnapPositionChangeListener {
-                        override fun onSnapPositionChange(position: Int) {
-                            if (position == rvAdapter.itemCount - 1 && rvAdapter.getCurrentList().isEmpty().not()) {
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        // Cached data is already fetched completely
+                        if (PreferenceManager.isAppModeOnline()) {
+                            if (!canScrollVertically(1) && mViewModel.isRequestInProgress().not()) {
                                 mViewModel.addLoadMoreRvData(rvAdapter.getCurrentList())
                             }
                         }
-                    })
+                    }
+                })
             }
             somethingWentWrongCl.btnRetry.setOnClickListener {
                 mViewModel.searchArticles(
@@ -122,10 +125,10 @@ class SearchNewsArticlesFragment : Fragment(R.layout.search_news_articles_fragme
         }
     }
 
-    private fun initPageCountUI(response: SearchArticlesResponseAPI?) {
+    private fun initPageCountUI(response: SearchArticleResponse?) {
         binding.pageActionLL.apply {
             tvCurrentPage.setVisibilityAndText(
-                response?.response?.currentPageNum?.toString() ?: mViewModel.getCurrentPageNum().toString()
+                response?.currentPageNum?.toString() ?: mViewModel.getCurrentPageNum().toString()
             )
             btnPreviousPage.visibility =
                 if (mViewModel.getCurrentPageNum() > 0) View.VISIBLE else View.INVISIBLE
