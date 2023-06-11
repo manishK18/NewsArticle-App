@@ -27,7 +27,6 @@ interface NewsArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQueryWithNewsArticles(queryCacheNewsArticleCrossRef: QueryCacheNewsArticleCrossRef)
 
-    @Transaction
     @Query("Select * from QueryCache where `query` = :query")
     suspend fun getNewsArticles(query: String): List<QueryWithNewsArticle>
 }

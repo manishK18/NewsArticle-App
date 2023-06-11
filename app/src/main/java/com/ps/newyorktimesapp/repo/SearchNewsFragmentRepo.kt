@@ -1,5 +1,6 @@
 package com.ps.newyorktimesapp.repo
 
+import com.ps.newyorktimesapp.constants.RequestParamConstants
 import com.ps.newyorktimesapp.database.dao.NewsArticleDao
 import com.ps.newyorktimesapp.database.models.QueryCache
 import com.ps.newyorktimesapp.database.models.QueryCacheNewsArticleCrossRef
@@ -18,17 +19,16 @@ class SearchNewsFragmentRepo(
 ) : BaseRepository(coroutineDispatcher) {
 
     suspend fun getSearchArticlesNYTAPI(
-        query: String,
-        offset: Int,
-        limit: Int
+        requestMap: HashMap<String, String>
     ): Result<SearchArticleResponse> {
+        val query = requestMap[RequestParamConstants.KEY_REQUEST_PARAM_QUERY] ?: ""
         if (PreferenceManager.isAppModeOnline().not()) {
             return Result.success(
                 serveCacheResponseData(query)
             )
         }
         val apiResult = createApiCall {
-            api.getNewsArticle(query, offset, limit)
+            api.getNewsArticle(requestMap)
         }
         if (apiResult.isSuccess) {
             // Cache data

@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ps.newyorktimesapp.R
+import com.ps.newyorktimesapp.constants.RequestParamConstants
 import com.ps.newyorktimesapp.models.ArticleData
 import com.ps.newyorktimesapp.models.SearchArticleResponse
 import com.ps.newyorktimesapp.models.recyclerview.LoadMoreRvData
@@ -34,8 +35,8 @@ class SearchNewsArticlesFragmentVM(
 
     private var searchArticleJob: Job? = null
     private var searchQuery: String? = null
-    private var offset = 0
-    private val LIMIT = 20
+    private var queryPageOffset = DEFAULT_QUERY_PAGE_OFFSET.toString()
+    private var queryPageLimit = DEFAULT_QUERY_PAGE_LIMIT
 
     fun searchArticles(mSearchQuery: String?, requestType: RequestType = RequestType.NORMAL) {
         searchArticleJob?.cancel()
@@ -44,37 +45,48 @@ class SearchNewsArticlesFragmentVM(
                 delay(QUERY_DELAY_MS)
             }
             searchQuery = mSearchQuery
-            if (searchQuery.isNullOrBlank().not()) {
+            mSearchQuery.takeIf { it.isNullOrBlank().not() }?.let { mSearchQuery ->
                 if (requestType != RequestType.LOAD_MORE) {
                     _searchArticleMutableLD.value = RequestResult.loading(null)
                     _uiListMutableLD.value = mutableListOf()
                 }
-                repo.getSearchArticlesNYTAPI(query = searchQuery ?: "", offset = offset, limit = LIMIT)
-                    .onSuccess {
-                        println(it.toString())
-                        offset = it.metaData?.offset ?: 0
-                        if (requestType == RequestType.LOAD_MORE) {
-                            _uiListMutableLD.value =
-                                _uiListMutableLD.value?.toMutableList()?.also { oldList ->
-                                    // Removing the LoadMoreVH
-                                    oldList.subList(0, oldList.size - 1)
-                                        .addAll(curateRvDataList(it.articleDataList))
-                                }
-                        } else {
-                            _uiListMutableLD.value = curateRvDataList(it.articleDataList)
-                        }
-                        _searchArticleMutableLD.value = RequestResult.success(it)
-                    }.onFailure {
-                        println(it.toString())
-                        _searchArticleMutableLD.value = RequestResult.error(throwable = it)
-                        _uiListMutableLD.value = mutableListOf()
+                repo.getSearchArticlesNYTAPI(
+                    getQueryRequestMap(requestType = requestType, query = mSearchQuery)
+                ).onSuccess {
+                    queryPageOffset = it.metaData?.offset?.toString() ?: DEFAULT_QUERY_PAGE_OFFSET
+                    queryPageLimit = it.metaData?.limit?.toString() ?: DEFAULT_QUERY_PAGE_LIMIT
+                    if (requestType == RequestType.LOAD_MORE) {
+                        _uiListMutableLD.value =
+                            _uiListMutableLD.value?.toMutableList()?.also { oldList ->
+                                // Removing the LoadMoreVH
+                                oldList.subList(0, oldList.size - 1)
+                                    .addAll(curateRvDataList(it.articleDataList))
+                            }
+                    } else {
+                        _uiListMutableLD.value = curateRvDataList(it.articleDataList)
                     }
-            } else {
+                    _searchArticleMutableLD.value = RequestResult.success(it)
+                }.onFailure {
+                    println(it.toString())
+                    _searchArticleMutableLD.value = RequestResult.error(throwable = it)
+                    _uiListMutableLD.value = mutableListOf()
+                }
+            } ?: kotlin.run {
                 resetData()
                 _searchArticleMutableLD.value = RequestResult.success(null)
                 _uiListMutableLD.value = curateRvDataList()
             }
         }
+    }
+
+    private fun getQueryRequestMap(requestType: RequestType, query: String): HashMap<String, String> {
+        val requestMap: HashMap<String, String> = HashMap()
+        requestMap[RequestParamConstants.KEY_REQUEST_PARAM_OFFSET] =
+            if (requestType != RequestType.LOAD_MORE) DEFAULT_QUERY_PAGE_OFFSET
+            else queryPageOffset
+        requestMap[RequestParamConstants.KEY_REQUEST_PARAM_LIMIT] = queryPageLimit
+        requestMap[RequestParamConstants.KEY_REQUEST_PARAM_QUERY] = query
+        return requestMap
     }
 
     private fun curateRvDataList(articlesDataList: List<ArticleData>? = null): List<RecyclerViewItem> {
@@ -155,5 +167,7 @@ class SearchNewsArticlesFragmentVM(
 
     companion object {
         private const val QUERY_DELAY_MS = 500L
+        private const val DEFAULT_QUERY_PAGE_OFFSET = "0"
+        private const val DEFAULT_QUERY_PAGE_LIMIT = "20"
     }
 }
