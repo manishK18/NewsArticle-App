@@ -51,39 +51,29 @@
         android:scrollbars="none"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/pageActionLL"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topSeparator"/>
-
-    <include
-        android:id="@+id/pageActionLL"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        layout="@layout/view_bottom_page_actions"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <FrameLayout
         android:id="@+id/progressBarLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/black_transp_10"
+        android:background="@color/black_transp_05"
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
         android:focusableInTouchMode="true"
-        app:layout_constraintBottom_toTopOf="@id/pageActionLL"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topSeparator">
+        app:layout_constraintTop_toBottomOf="@id/topSeparator"
+        tools:visibility="visible">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/purple_700" />
+            android:indeterminateTint="@color/black" />
 
     </FrameLayout>
 
@@ -99,6 +89,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topSeparator"
-        app:layout_constraintBottom_toTopOf="@id/pageActionLL"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

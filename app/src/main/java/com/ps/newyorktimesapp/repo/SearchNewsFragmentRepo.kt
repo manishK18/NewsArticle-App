@@ -42,32 +42,22 @@ class SearchNewsFragmentRepo(
             localDataSource?.getNewsArticles(query)?.forEach {
                 newsArticleList.addAll(it.newsArticles)
             }
-            if (newsArticleList.isNotEmpty()) {
-                return Result.success(
+            return if (newsArticleList.isNotEmpty()) {
+                Result.success(
                     SearchArticleResponse(
                         query = query,
                         articleDataList = newsArticleList,
-                        status = RequestResult.Status.SUCCESS.toString(),
-                        meta = null,
-                        currentPageNum = 0,
-                        nextPageNum = 0,
-                        previousPageNum = 0
+                        status = RequestResult.Status.SUCCESS.toString()
                     )
                 )
             } else {
-                return Result.failure(
+                Result.failure(
                     exception = apiResult.exceptionOrNull()
                         ?: Throwable("Api not reachable, also no cache data found")
                 )
             }
         }
     }
-
-//    suspend fun getSearchArticles(query: String, pageNum: String): Result<SearchArticleResponse> {
-//        return createApiCall {
-//            api.getLocalSearchArticles(query, pageNum)
-//        }
-//    }
 
     private suspend fun serveCacheResponseData(query: String): SearchArticleResponse {
         val newsArticleList = mutableListOf<ArticleData>()
@@ -77,11 +67,7 @@ class SearchNewsFragmentRepo(
         return SearchArticleResponse(
             articleDataList = newsArticleList,
             status = RequestResult.Status.SUCCESS.toString(),
-            query = query,
-            currentPageNum = 0,
-            nextPageNum = 0,
-            previousPageNum = 0,
-            meta = null
+            query = query
         )
     }
 

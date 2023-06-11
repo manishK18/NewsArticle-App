@@ -8,13 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bharat.shortnews.utils.TimeUtils
 import com.ps.newyorktimesapp.R
 import com.ps.newyorktimesapp.models.ArticleData
 import com.ps.newyorktimesapp.models.SearchArticleResponse
-import com.ps.newyorktimesapp.models.api_direct.ArticleDataAPI
-import com.ps.newyorktimesapp.models.api_direct.Multimedia
-import com.ps.newyorktimesapp.models.api_direct.SearchArticlesResponseAPI
 import com.ps.newyorktimesapp.models.recyclerview.LoadMoreRvData
 import com.ps.newyorktimesapp.models.recyclerview.NewsArticleRvData
 import com.ps.newyorktimesapp.models.recyclerview.NoMatchingSearchResultsRvData
@@ -30,7 +26,6 @@ import kotlinx.coroutines.launch
 class SearchNewsArticlesFragmentVM(
     private val repo: SearchNewsFragmentRepo
 ) : ViewModel() {
-    var requestType = RequestType.NORMAL
     private val _searchArticleMutableLD = MutableLiveData<RequestResult<SearchArticleResponse?>>()
     val searchArticleLD: LiveData<RequestResult<SearchArticleResponse?>> = _searchArticleMutableLD
 
@@ -38,7 +33,6 @@ class SearchNewsArticlesFragmentVM(
     val uiListMutableLD: LiveData<List<RecyclerViewItem>?> = _uiListMutableLD
 
     private var searchArticleJob: Job? = null
-    private var pageNum: Int = 0
     private var searchQuery: String? = null
     private var offset = 0
     private val LIMIT = 20
@@ -58,7 +52,7 @@ class SearchNewsArticlesFragmentVM(
                 repo.getSearchArticlesNYTAPI(query = searchQuery ?: "", offset = offset, limit = LIMIT)
                     .onSuccess {
                         println(it.toString())
-                        offset = it.meta?.offset ?: 0
+                        offset = it.metaData?.offset ?: 0
                         if (requestType == RequestType.LOAD_MORE) {
                             _uiListMutableLD.value =
                                 _uiListMutableLD.value?.toMutableList()?.also { oldList ->
@@ -141,15 +135,7 @@ class SearchNewsArticlesFragmentVM(
         }
     }
 
-    private fun getImageUrlCompletePath(articleData: ArticleDataAPI): String? {
-        val prefixPath =
-            articleData.multimedia?.firstOrNull { it.subType == Multimedia.KEY_MEDIA_TYPE }?.url
-        if (prefixPath.isNullOrBlank()) return null
-        return Multimedia.MEDIA_PREFIX + prefixPath
-    }
-
     private fun resetData() {
-        pageNum = 0
         searchQuery = ""
     }
 
@@ -161,10 +147,7 @@ class SearchNewsArticlesFragmentVM(
         }
     }
 
-    fun incrementPageNum() = pageNum++
-    fun decrementPageNum() = pageNum--
     fun getSearchQuery() = searchQuery
-    fun getCurrentPageNum() = pageNum
 
     fun isRequestInProgress(): Boolean {
         return searchArticleJob?.isActive == true
