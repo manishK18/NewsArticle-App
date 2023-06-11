@@ -18,34 +18,16 @@ interface NewsArticleDao {
         fun getInstance() = NewsAppDatabase.INSTANCE?.getNewsArticleDao()
     }
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewsArticle(newsArticle: ArticleData)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQuery(queryCache: QueryCache)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQueryWithNewsArticles(queryCacheNewsArticleCrossRef: QueryCacheNewsArticleCrossRef)
 
     @Transaction
     @Query("Select * from QueryCache where `query` = :query")
     suspend fun getNewsArticles(query: String): List<QueryWithNewsArticle>
-
-
-
-
-
-
-
-
-//    @Query("Insert into NewsArticle (id, article_, article_webUrl) Values(:articleId, :articleData)")
-//    suspend fun insertNewsArticle(articleId: String, articleData: ArticleDataAPI)
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertNewsArticle(articleId: String, articleData: ArticleDataAPI)
-//
-//    @Query("select * from QueryCache WHERE `query` = :query")
-//    suspend fun getNewsIdsListForQuery(query: String): List<String>
-//
-//    @Query("UPDATE QueryCache SET newsIdList = :articlesId WHERE `query` = :query")
-//    suspend fun insertNewsArticlesIds(query: String, articlesId: List<String>)
 }
