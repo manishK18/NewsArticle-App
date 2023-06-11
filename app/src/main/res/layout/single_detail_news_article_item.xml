@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/thumbnailRl"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <ImageView
+                android:id="@+id/thumbnailIv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_transp_20" />
+
+            <TextView
+                android:id="@+id/authorTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/round_rectangle_chip_view"
+                android:backgroundTint="#00B0FF"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_4sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/white"
+                tools:text="James Bond" />
+
+            <TextView
+                android:id="@+id/newsSrcTagTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_toEndOf="@id/authorTv"
+                android:background="@drawable/round_rectangle_chip_view"
+                android:backgroundTint="@color/news_category_chip_color"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_4sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/white"
+                tools:text="New York Times" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp">
+
+            <TextView
+                android:id="@+id/keywordsTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/keywords_color"
+                android:textSize="@dimen/_10sdp"
+                tools:text="Bachmann Michele m, Paul Raon, Republican Party, etc" />
+
+            <TextView
+                android:id="@+id/headlineTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                tools:text="CBSE Class 12 result to be decided on performance in Classes 10, 11 and 12" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_time" />
+
+                <TextView
+                    android:id="@+id/dateTimeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:textColor="@color/grey_500"
+                    android:textSize="14sp"
+                    tools:text="Thu Jun 06 2023 06:34 PM" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/detailTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat_regular"
+                android:lineSpacingMultiplier="1.3"
+                android:maxLines="5"
+                android:textColor="@color/grey_600"
+                android:textSize="16sp"
+                tools:text="CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. 40% of marks will be based on Class 12 Unit Test/Mid-Term/Pre-Board exam, while 30% marks will be based on Class 11 final exam. 30% marks will be based on theory component of best three performing subjects in Class 10. -> END" />
+
+            <TextView
+                android:id="@+id/openWebUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableTint="@color/blue_500"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat_regular"
+                android:maxLines="6"
+                android:text="Read on website"
+                android:textColor="@color/blue_500"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

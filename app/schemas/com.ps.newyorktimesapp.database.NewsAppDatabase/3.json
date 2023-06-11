@@ -1,0 +1,201 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "b0bdc9b12d1ce2ed367f649d648ac8dc",
+    "entities": [
+      {
+        "tableName": "NewsArticle",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`newsId` TEXT NOT NULL, `byline` TEXT, `documentType` TEXT, `headline` TEXT, `id` TEXT, `keywords` TEXT, `leadParagraph` TEXT, `multimedia` TEXT, `newsDesk` TEXT, `printPage` TEXT, `printSection` TEXT, `pubDate` TEXT, `sectionName` TEXT, `snippet` TEXT, `source` TEXT, `subsectionName` TEXT, `typeOfMaterial` TEXT, `uri` TEXT, `webUrl` TEXT, `wordCount` INTEGER, `card_type` INTEGER, PRIMARY KEY(`newsId`))",
+        "fields": [
+          {
+            "fieldPath": "newsId",
+            "columnName": "newsId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "article.byline",
+            "columnName": "byline",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.documentType",
+            "columnName": "documentType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.headline",
+            "columnName": "headline",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.keywords",
+            "columnName": "keywords",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.leadParagraph",
+            "columnName": "leadParagraph",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.multimedia",
+            "columnName": "multimedia",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.newsDesk",
+            "columnName": "newsDesk",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.printPage",
+            "columnName": "printPage",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.printSection",
+            "columnName": "printSection",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.pubDate",
+            "columnName": "pubDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.sectionName",
+            "columnName": "sectionName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.snippet",
+            "columnName": "snippet",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.subsectionName",
+            "columnName": "subsectionName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.typeOfMaterial",
+            "columnName": "typeOfMaterial",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.uri",
+            "columnName": "uri",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.webUrl",
+            "columnName": "webUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.wordCount",
+            "columnName": "wordCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "article.cardType",
+            "columnName": "card_type",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "newsId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "QueryCache",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`query` TEXT NOT NULL, PRIMARY KEY(`query`))",
+        "fields": [
+          {
+            "fieldPath": "query",
+            "columnName": "query",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "query"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "QueryCacheNewsArticleCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`query` TEXT NOT NULL, `newsId` TEXT NOT NULL, PRIMARY KEY(`query`, `newsId`))",
+        "fields": [
+          {
+            "fieldPath": "query",
+            "columnName": "query",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newsId",
+            "columnName": "newsId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "query",
+            "newsId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b0bdc9b12d1ce2ed367f649d648ac8dc')"
+    ]
+  }
+}

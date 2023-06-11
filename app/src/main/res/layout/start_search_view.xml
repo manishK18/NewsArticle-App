@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/_12sdp"
+        android:gravity="center"
+        android:padding="@dimen/_20sdp"
+        android:layout_margin="@dimen/_12sdp"
+        android:lineSpacingMultiplier="1.5"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_medium"
+        tools:text="Start searching news articles from New York Times API"/>
+
+</LinearLayout>

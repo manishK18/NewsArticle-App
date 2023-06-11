@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_6sdp">
+
+    <ImageView
+        android:id="@+id/thumbnailIv"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:background="@color/colorTertiary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".35"/>
+
+    <TextView
+        android:id="@+id/authorTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:background="@drawable/round_rectangle_chip_view"
+        android:backgroundTint="#00B0FF"
+        android:maxLength="15"
+        android:textSize="@dimen/_8sdp"
+        android:paddingStart="@dimen/_4sdp"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_4sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="James Bond" />
+
+    <TextView
+        android:id="@+id/newsSrcTagTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_toEndOf="@id/authorTv"
+        android:textSize="@dimen/_8sdp"
+        android:background="@drawable/round_rectangle_chip_view"
+        android:backgroundTint="@color/news_category_chip_color"
+        android:paddingStart="@dimen/_4sdp"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_4sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/authorTv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="New York Times" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/topTagsGrp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:layout_constraintStart_toEndOf="@id/thumbnailIv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:constraint_referenced_ids="authorTv, newsSrcTagTv"/>
+
+    <TextView
+        android:id="@+id/headlineTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:lineSpacingMultiplier="1.1"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginStart="@dimen/_6sdp"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/topTagsGrp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="4"
+        android:ellipsize="end"
+        tools:text="CBSE Class 12 result to be decided on performance in Classes 10, 11 and 12" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="thumbnailIv, headlineTv"/>
+
+    <TextView
+        android:id="@+id/keywordsTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="@color/keywords_color"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        app:layout_constraintTop_toBottomOf="@id/barrier2"
+        tools:text="Bachmann Michele m, Paul Raon, Republican Party, etc" />
+
+    <LinearLayout
+        android:id="@+id/dateTimeLL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/keywordsTv">
+
+        <ImageView
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_time" />
+
+        <TextView
+            android:id="@+id/dateTimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:textColor="@color/grey_600"
+            android:textSize="@dimen/_8sdp"
+            android:layout_gravity="center"
+            tools:text="Thu Jun 06 2023 06:34 PM" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/detailTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingMultiplier="1.2"
+        android:maxLines="5"
+        android:textColor="@color/grey_600"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateTimeLL"
+        tools:text="CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. CBSE has said Class 12 result will be declared by July 31 and submitted evaluation criteria to Supreme Court. 40% of marks will be based on Class 12 Unit Test/Mid-Term/Pre-Board exam, while 30% marks will be based on Class 11 final exam. 30% marks will be based on theory component of best three performing subjects in Class 10. -> END" />
+
+    <TextView
+        android:id="@+id/openWebUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawableTint="@color/blue_500"
+        android:ellipsize="end"
+        android:fontFamily="@font/montserrat_semibold"
+        android:maxLines="6"
+        android:text="Read on website ➤"
+        android:textColor="@color/blue_500"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detailTv"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/colorTertiary"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/openWebUrl"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
