@@ -5,8 +5,14 @@
 </p>
 </br>
 
+## Download from drive link to test
+[<img alt="alt_text" width="200px" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>](https://drive.google.com/file/d/10qkSytMC0jLr0x64UzJ822Ly1vGm_gKQ/view?usp=sharing)
+
 ## Screenshots
-TO BE ADDED
+[<img alt="alt_text" width="300px" src="https://github.com/manishK18/NewsArticle-App/assets/77493128/07910fe5-d65e-4c91-b8e4-50ebece0ce29"/>]
+[<img alt="alt_text" width="300px" src="https://github.com/manishK18/NewsArticle-App/assets/77493128/b8ad89e0-cf4e-4aae-873b-289611bb33fa"/>]
+[<img alt="alt_text" width="300px" src="https://github.com/manishK18/NewsArticle-App/assets/77493128/e70d7cd2-63f4-4376-92bf-070001c0f1fc"/>]
+
 
 ## About
 Newsify provides you space to search about latest topics and queries from the popular API's - New York Times and Guardian API. News articles will be always loaded
