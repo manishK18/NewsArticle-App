@@ -6,12 +6,10 @@
 </br>
 
 ## Download from drive link to test
-[<img alt="alt_text" width="200px" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>](https://drive.google.com/file/d/10qkSytMC0jLr0x64UzJ822Ly1vGm_gKQ/view?usp=sharing)
+[<img alt="alt_text" width="200px" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>](https://drive.google.com/file/d/1uFag1BGXziV9kGbVmOj35S1eXA5WBQco/view?usp=sharing)
 
 ## Screenshots
-[<img alt="alt_text" width="300px" src="https://github.com/manishK18/NewsArticle-App/assets/77493128/07910fe5-d65e-4c91-b8e4-50ebece0ce29"/>]
-[<img alt="alt_text" width="300px" src="https://github.com/manishK18/NewsArticle-App/assets/77493128/b8ad89e0-cf4e-4aae-873b-289611bb33fa"/>]
-[<img alt="alt_text" width="300px" src="https://github.com/manishK18/NewsArticle-App/assets/77493128/e70d7cd2-63f4-4376-92bf-070001c0f1fc"/>]
+<img alt="alt_text" width="300px" src="./images/Screenshot_2023-06-14-13-05-53-70_80b0973330f461d48be936c47de25607.jpg"/> <img alt="alt_text" width="300px" src="./images/Screenshot_2023-06-14-13-06-00-86_80b0973330f461d48be936c47de25607.jpg"/> <img alt="alt_text" width="300px" src="./images/Screenshot_2023-06-14-13-06-06-43_80b0973330f461d48be936c47de25607.jpg"/> <img alt="alt_text" width="300px" src="./images/Screenshot_2023-06-14-13-06-12-32_80b0973330f461d48be936c47de25607.jpg"/>
 
 
 ## About
@@ -38,7 +36,7 @@ from the local database. Remote data from the API and the local data in the data
 ## Architecture
 This app uses [***MVVM (Model View View-Model)***](https://developer.android.com/jetpack/docs/guide#recommended-app-arch) architecture.
 
-![1](https://github.com/manishK18/NewsArticle-App/assets/77493128/7ea77331-d59b-44f8-be48-375f19ae358e)
+![1](./images/mvvm.png)
 
 
 ## Upcoming features
